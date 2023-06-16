@@ -22,4 +22,6 @@ jobs:
           PGPASSWORD='${{ secrets.CLOUD_SQL_PASSWORD }}' psql \
           -U "${{ secrets.CLOUD_SQL_USERNAME }}" \
           -d "${{ secrets.CLOUD_SQL_DB }}" \
+          -h 127.0.0.1
+          -p 5432
           -f test.sql
