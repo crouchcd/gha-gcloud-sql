@@ -19,7 +19,7 @@ jobs:
       - name: Test PSQL
         shell: bash
         run: |
-          PGPASSWORD="${{ secrets.CLOUD_SQL_PASSWORD }}" psql \
+          PGPASSWORD='${{ secrets.CLOUD_SQL_PASSWORD }}' psql \
           -U "${{ secrets.CLOUD_SQL_USERNAME }}" \
           -d "${{ secrets.CLOUD_SQL_DB }}" \
           -f test.sql
