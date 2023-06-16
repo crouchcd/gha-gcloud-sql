@@ -1,0 +1,24 @@
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: mattes/gce-cloudsql-proxy-action@v1
+        with:
+          creds: ${{ secrets.CLOUD_SQL_CLIENT_CREDENTIALS }}
+          instance: cidc-dev-alpha:us-central1:gha-test
+
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: "9.6.0"
+          postgresql db: "${{ secrets.CLOUD_SQL_DB }}"
+          postgresql user: "${{ secrets.CLOUD_SQL_USERNAME }}"
+          postgresql password: "${{ secrets.CLOUD_SQL_PASSWORD }}"
+
+      - name: Test PSQL
+        shell: bash
+        run: |
+          psql -f test.sql

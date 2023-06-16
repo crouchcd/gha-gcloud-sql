@@ -1,0 +1,4 @@
+jupyter
+psycopg2
+python-dotenv
+SQLAlchemy==1.4.48
