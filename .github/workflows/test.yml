@@ -11,14 +11,15 @@ jobs:
           creds: ${{ secrets.CLOUD_SQL_CLIENT_CREDENTIALS }}
           instance: cidc-dev-alpha:us-central1:gha-test
 
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: "9.6"
-          postgresql db: "${{ secrets.CLOUD_SQL_DB }}"
-          postgresql user: "${{ secrets.CLOUD_SQL_USERNAME }}"
-          postgresql password: "${{ secrets.CLOUD_SQL_PASSWORD }}"
+      - name: Start PostgreSQL
+        shell: bash
+        run: |
+          sudo systemctl start postgresql.service
 
       - name: Test PSQL
         shell: bash
         run: |
-          psql -f test.sql
+          PGPASSWORD="${{ secrets.CLOUD_SQL_PASSWORD }}" psql \
+          -U "${{ secrets.CLOUD_SQL_USERNAME }}" \
+          -d "${{ secrets.CLOUD_SQL_DB }}" \
+          -f test.sql
